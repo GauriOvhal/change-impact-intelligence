@@ -1,8 +1,5 @@
 """
 database.py
-------------
-Very small SQLite wrapper. No ORM on purpose - this is a hackathon
-project and plain sqlite3 keeps things easy to read and debug.
 
 Tables:
   Projects       - one row per construction / renovation project

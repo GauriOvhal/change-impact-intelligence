@@ -1,6 +1,5 @@
 /* =========================================================
    Change Impact Intelligence — frontend logic
-   Vanilla JS, talks to the FastAPI backend at API_BASE.
    ========================================================= */
 
 const API_BASE = ""; // same origin - backend serves this file too
