@@ -210,11 +210,6 @@ http://127.0.0.1:8000
 
 ---
 
-## Team
-
-ArchScale Intern Technology Hackathon Submission
-
----
 
 ## License
 
