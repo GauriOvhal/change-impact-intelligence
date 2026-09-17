@@ -150,11 +150,6 @@ change-impact-intelligence/
 │   ├── database.py
 │   └── requirements.txt
 │
-├── docs/
-│   └── Project_Report.pdf
-│
-├── screenshots/
-│
 └── README.md
 ```
 
