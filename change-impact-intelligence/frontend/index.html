@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Change Impact Intelligence</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="app-shell">
+
+  <!-- ================= SIDEBAR ================= -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">CI</div>
+      <div class="brand-text">
+        <strong>Change Impact</strong>
+        <span>Intelligence</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-view="dashboard">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor"/><rect x="11.5" y="2.5" width="6" height="6" rx="1" stroke="currentColor"/><rect x="2.5" y="11.5" width="6" height="6" rx="1" stroke="currentColor"/><rect x="11.5" y="11.5" width="6" height="6" rx="1" stroke="currentColor"/></svg>
+        Dashboard
+      </button>
+      <button class="nav-item" data-view="new-revision">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><rect x="2.5" y="2.5" width="15" height="15" rx="1.5" stroke="currentColor"/><path d="M10 6.5V13.5M6.5 10H13.5" stroke="currentColor" stroke-linecap="round"/></svg>
+        New Revision
+      </button>
+      <button class="nav-item" data-view="impact">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor"/><circle cx="10" cy="10" r="3.5" stroke="currentColor"/><circle cx="10" cy="10" r="0.75" fill="currentColor"/></svg>
+        Impact Analysis
+      </button>
+      <button class="nav-item" data-view="ripple">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="1.4" fill="currentColor"/><circle cx="10" cy="10" r="4.5" stroke="currentColor"/><circle cx="10" cy="10" r="7.6" stroke="currentColor" opacity="0.55"/></svg>
+        Ripple Effect
+      </button>
+      <button class="nav-item" data-view="simulator">
+        <svg class="nav-icon" viewBox="0 0 20 20" fill="none"><path d="M3 6h6l2 3M17 6h-4M3 14h6l2-3M17 14h-4" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.2 4.2 17 6l-3.8 1.8M13.2 15.8 17 14l-3.8-1.8" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        What-If Simulator
+      </button>
+    </nav>
+
+    <div class="sidebar-foot">
+      <div class="project-picker">
+        <label for="project-select">ACTIVE PROJECT</label>
+        <select id="project-select"></select>
+        <button id="new-project-btn" class="link-btn">+ New project</button>
+      </div>
+      <div class="project-picker">
+        <label for="user-select">LOGGED IN AS</label>
+        <select id="user-select"></select>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main class="main">
+
+    <div class="project-strip" id="project-strip"></div>
+
+    <!-- ---------- DASHBOARD ---------- -->
+    <section class="view active" id="view-dashboard">
+      <header class="view-header">
+        <h1>Executive Dashboard</h1>
+        <p>Every open revision, rolled up into one number.</p>
+      </header>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <span class="kpi-label">Total Projects</span>
+          <span class="kpi-value" id="kpi-projects">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Total Revisions</span>
+          <span class="kpi-value" id="kpi-revisions">—</span>
+        </div>
+        <div class="kpi-card accent">
+          <span class="kpi-label">Added Cost</span>
+          <span class="kpi-value" id="kpi-cost">—</span>
+        </div>
+        <div class="kpi-card accent">
+          <span class="kpi-label">Added Delay</span>
+          <span class="kpi-value" id="kpi-delay">—</span>
+        </div>
+        <div class="kpi-card danger">
+          <span class="kpi-label">High Risk Changes</span>
+          <span class="kpi-value" id="kpi-risk">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Pending Approvals</span>
+          <span class="kpi-value" id="kpi-pending">—</span>
+        </div>
+        <div class="kpi-card">
+          <span class="kpi-label">Top Requester</span>
+          <span class="kpi-value kpi-value-sm" id="kpi-requester">—</span>
+        </div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>Revision Trend</h3>
+          <canvas id="chart-trend" height="180"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Cost Impact Chart</h3>
+          <canvas id="chart-cost" height="180"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Revisions by Category</h3>
+          <canvas id="chart-category" height="180"></canvas>
+        </div>
+        <div class="panel">
+          <h3>Risk Distribution</h3>
+          <canvas id="chart-risk" height="180"></canvas>
+        </div>
+        <div class="panel span-2">
+          <h3>Highest Risk Revision</h3>
+          <div id="highest-risk-box" class="highlight-box">No revisions yet.</div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <h3>Recent Revisions</h3>
+        <table class="data-table" id="recent-table">
+          <thead>
+            <tr><th>Title</th><th>Cost</th><th>Delay</th><th>Risk</th><th>Status</th><th>Logged</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ---------- NEW REVISION ---------- -->
+    <section class="view" id="view-new-revision">
+      <header class="view-header">
+        <h1>Change Request Center</h1>
+        <p>Log a revision. The AI analyzer runs the moment you submit.</p>
+      </header>
+
+      <form class="panel form" id="revision-form">
+        <div class="field">
+          <label for="rev-title">Revision title</label>
+          <input id="rev-title" type="text" placeholder="e.g. Change flooring to marble" required />
+        </div>
+        <div class="field">
+          <label for="rev-desc">Description</label>
+          <textarea id="rev-desc" rows="4" placeholder="Describe the change, materials, and reason for the request." required></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="rev-category">Category (optional)</label>
+            <input id="rev-category" type="text" placeholder="Leave blank to let the AI decide" />
+          </div>
+          <div class="field">
+            <label for="rev-priority">Priority</label>
+            <select id="rev-priority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn-primary">Analyze revision</button>
+      </form>
+
+      <div class="panel hidden" id="analysis-result">
+        <h3>AI Change Analyzer</h3>
+        <div class="analysis-grid" id="analysis-grid"></div>
+      </div>
+    </section>
+
+    <!-- ---------- IMPACT ANALYSIS ---------- -->
+    <section class="view" id="view-impact">
+      <header class="view-header">
+        <h1>Impact Analysis</h1>
+        <p>Select a revision to see its full cost, timeline, risk and stakeholder breakdown.</p>
+      </header>
+
+      <div class="panel">
+        <label for="impact-select">Revision</label>
+        <select id="impact-select"></select>
+      </div>
+
+      <div class="impact-cards" id="impact-cards"></div>
+
+      <div class="panel hidden" id="approval-panel">
+        <h3>Approval</h3>
+        <div class="approval-row">
+          <span>Current status: <strong id="current-status">—</strong></span>
+          <div class="approval-actions">
+            <button class="btn-secondary btn-approve" data-status="Approved">Approve</button>
+            <button class="btn-secondary btn-reject" data-status="Rejected">Reject</button>
+            <button class="btn-secondary" data-status="Pending Approval">Reset to Pending</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- RIPPLE EFFECT ---------- -->
+    <section class="view" id="view-ripple">
+      <header class="view-header">
+        <h1>Ripple Effect</h1>
+        <p>How one change moves through the project.</p>
+      </header>
+
+      <div class="panel">
+        <label for="ripple-select">Revision</label>
+        <select id="ripple-select"></select>
+      </div>
+
+      <div class="panel">
+        <p class="ripple-hint">Hover or tap a node to trace its downstream path.</p>
+        <div id="ripple-graph" class="ripple-graph"></div>
+      </div>
+    </section>
+
+    <!-- ---------- WHAT-IF SIMULATOR ---------- -->
+    <section class="view" id="view-simulator">
+      <header class="view-header">
+        <h1>What-If Simulator</h1>
+        <p>Compare two alternatives before anything is approved.</p>
+      </header>
+
+      <div class="sim-grid">
+        <form class="panel form" id="sim-form-a">
+          <h3>Option A</h3>
+          <div class="field">
+            <label>Title</label>
+            <input class="sim-title" type="text" placeholder="e.g. Italian Marble" required />
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="sim-desc" rows="3" placeholder="Describe the option" required></textarea>
+          </div>
+          <div class="field">
+            <label>Priority</label>
+            <select class="sim-priority">
+              <option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option>
+            </select>
+          </div>
+        </form>
+
+        <form class="panel form" id="sim-form-b">
+          <h3>Option B</h3>
+          <div class="field">
+            <label>Title</label>
+            <input class="sim-title" type="text" placeholder="e.g. Premium Granite" required />
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea class="sim-desc" rows="3" placeholder="Describe the option" required></textarea>
+          </div>
+          <div class="field">
+            <label>Priority</label>
+            <select class="sim-priority">
+              <option>Low</option><option selected>Medium</option><option>High</option><option>Urgent</option>
+            </select>
+          </div>
+        </form>
+      </div>
+
+      <button class="btn-primary" id="sim-run">Compare options</button>
+
+      <div class="panel hidden" id="sim-result">
+        <h3>Side-by-side comparison</h3>
+        <table class="data-table" id="sim-table">
+          <thead><tr><th>Metric</th><th id="sim-head-a">Option A</th><th id="sim-head-b">Option B</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ================= NEW PROJECT MODAL ================= -->
+<div class="modal-overlay hidden" id="new-project-overlay">
+  <div class="modal-panel">
+    <div class="modal-header">
+      <h3>New Project</h3>
+      <button type="button" class="modal-close" id="np-cancel" aria-label="Close">&times;</button>
+    </div>
+
+    <form id="new-project-form">
+      <div class="field">
+        <label for="np-name">Project Name</label>
+        <input id="np-name" type="text" placeholder="Luxury Villa Renovation" required />
+      </div>
+      <div class="field">
+        <label for="np-client">Client</label>
+        <input id="np-client" type="text" placeholder="ABC Builders" required />
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="np-budget">Budget</label>
+          <div class="currency-input">
+            <span>₹</span>
+            <input id="np-budget" type="number" min="0" step="1000" placeholder="12000000" required />
+          </div>
+          <span class="field-hint" id="np-budget-preview">&nbsp;</span>
+        </div>
+        <div class="field">
+          <label for="np-deadline">Deadline</label>
+          <input id="np-deadline" type="date" required />
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" id="np-cancel-2">Cancel</button>
+        <button type="submit" class="btn-primary">Create project</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
